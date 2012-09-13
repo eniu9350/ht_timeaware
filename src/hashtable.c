@@ -282,7 +282,7 @@ void htta_getinfo(htta* h, htinfo* hi)
 	for(i=0;i<h->n;i++)	{
 		hitem = h->hlist[i];
 		for(j=0;i<hitem->size;j++)	{
-			b = h->buckets+j;
+			b = h->hlist+j;
 
 			if(b->size!=0)	{
 					hi->nkeys += b->size;
