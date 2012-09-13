@@ -210,10 +210,44 @@ void ht_getinfo(ht* h, htinfo* hi)
 				hi->nkeys += b->size;
 				hi->usedbucket ++;
 		}
-		
 	}
 
 	hi->avgk_valid = hi->nkeys*1.0/hi->usedbucket;
 	hi->avgk_all = hi->nkeys*1.0/h->size;
+}
+
+//--------htta
+htta* htta_new(int sizeeach, int n)
+{
+	int i;
+	htta* h = MALLOC(1, htta);
+	ht* hitem;
+	h->hlist = MALLOC(n, ht*);
+	for(i=0;i<n;i++)	{
+		h->hlist[i] = ht_new(sizeeach);
+	}
+	h->n = n;
+	h->sizeeach = sizeeach;
+	return h;
+}
+
+void htta_put(htta* h, key* k, value* v)
+{
+	int hashid = (int)((hash(*k))%(h->sizeeach));
+	//printf("hash *k = %ld, h->size=%d\n", hash(*k), h->size);
+	ht* hitem;
+	//mmm:
+	hitem = h->hlist[0];
+	ht_bucket_add(hitem, hashid, k, v);
+}
+
+value* htta_get(htta* h, key* k)
+{
+	int hashid = (int)((hash(*k))%(h->sizeeach));
+	//printf("hash *k = %ld, h->size=%d\n", hash(*k), h->size);
+	//mmm: some heuristics
+	ht* hitem;
+	hitem = h->hlist[0];
+	return ht_bucket_get(hitem, hashid, k);
 }
 

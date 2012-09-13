@@ -25,6 +25,12 @@ typedef struct _ht	{
 	int size;
 }ht;
 
+typedef struct _htta	{
+	ht** hlist;
+	int sizeeach;
+	int n;
+}htta;
+
 typedef struct _htinfo	{
 	int usedbucket;
 	int nkeys;
@@ -46,11 +52,23 @@ int value_cmp(value* v1, value* v2);
 kvpair* kvp_new(key* k, value* v);
 
 
+
+//--------ht
 ht* ht_new(int size);
 void ht_put(ht* h, key* k, value* v);
 value* ht_get(ht* h, key* k);
 void ht_remove(ht* h, key* k);
+
+
 void ht_getinfo(ht* h, htinfo* hi);
+
+
+//--------htta
+htta* htta_new(int sizeeach, int n);
+void htta_put(htta* h, key* k, value* v);
+value* htta_get(htta* h, key* k);
+//void htta_remove(htta* h, key* k);
+
 
 
 #endif
