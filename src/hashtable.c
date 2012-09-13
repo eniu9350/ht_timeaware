@@ -251,3 +251,48 @@ value* htta_get(htta* h, key* k)
 	return ht_bucket_get(hitem, hashid, k);
 }
 
+void htta_remove(htta* h, key* k)
+{
+	int hashid = (int)((hash(*k))%(h->sizeeach));
+	value* v;
+	//printf("ht_remove: hash *k = %ld, h->size=%d\n", hash(*k), h->size);
+	//mmm: some heuristics
+	ht* hitem;
+	hitem = h->hlist[0];
+	//check if exist in it
+	//mmm: try remove directly
+	v = ht_bucket_get(hitem, hashid, k);
+	if(v==NULL)	{
+		//mmm: check others
+	}
+	return ht_bucket_remove(h, hashid, k);
+}
+
+
+void htta_getinfo(htta* h, htinfo* hi)
+{
+
+	int i,j;
+	bucket* b;
+	ht* hitem;
+
+	hi->nkeys = 0;
+	hi->usedbucket = 0;
+
+	for(i=0;i<h->n;i++)	{
+		hitem = h->hlist[i];
+		for(j=0;i<hitem->size;j++)	{
+			b = h->buckets+j;
+
+			if(b->size!=0)	{
+					hi->nkeys += b->size;
+					hi->usedbucket ++;
+			}
+		}
+		}
+
+	hi->avgk_valid = hi->nkeys*1.0/hi->usedbucket;
+	hi->avgk_all = hi->nkeys*1.0/((h->n)*(h->sizeeach));
+	
+}
+

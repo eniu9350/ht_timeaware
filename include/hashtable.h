@@ -67,7 +67,8 @@ void ht_getinfo(ht* h, htinfo* hi);
 htta* htta_new(int sizeeach, int n);
 void htta_put(htta* h, key* k, value* v);
 value* htta_get(htta* h, key* k);
-//void htta_remove(htta* h, key* k);
+void htta_remove(htta* h, key* k);
+void htta_getinfo(htta* h, htinfo* hi);
 
 
 
